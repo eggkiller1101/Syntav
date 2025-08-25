@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Synthpaw</title>
+  <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico">
+  <link rel="icon" type="image/png" href="assets/img/favicon.png">
+  <style>
+    /* 全局样式 */
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Georgia', serif;
+      color: #2b1a0e; /* 深棕色文字 */
+    }
+
+    /* 背景图覆盖整个页面 */
+    body {
+      background: url("assets/img/background.jpg") no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: url("assets/img/sword.png") 4 2, auto;
+    }
+
+    /* 羊皮纸书容器 */
+    .book {
+      position: relative;
+      width: 1100px;
+      height: 800px;
+      background: url("assets/img/parchment.png") no-repeat center center;
+      background-size: contain;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 40px;
+      box-sizing: border-box;
+    }
+
+    /* 左上角 Bookmark 图片 */
+    .bookmark {
+      position: absolute;
+      top: 100px;
+      left: -66px;
+      width: 200px; /* 可调整或用百分比 */
+      height: auto;
+      pointer-events: auto; /* 允许点击 */
+      user-select: none;
+      transition: transform 150ms ease;
+      transform-origin: top left;
+    }
+
+    /* 复制两个：分别在原基础下移100px、200px */
+    .bookmark.second { top: 200px; }
+    .bookmark.third { top: 300px; }
+
+    /* 悬停放大效果 */
+    .bookmark:hover {
+      transform: scale(1.06);
+    }
+
+    
+
+    
+
+    h1 {
+      font-family: 'UnifrakturCook', cursive; /* 建议用中世纪风格字体 */
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="book">
+    <img class="bookmark" src="assets/img/bookmark.png" alt="Bookmark">
+    <img class="bookmark second" src="assets/img/bookmark.png" alt="Bookmark">
+    <img class="bookmark third" src="assets/img/bookmark.png" alt="Bookmark">
+  </div>
+</body>
+</html>
