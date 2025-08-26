@@ -94,6 +94,7 @@
       transition: transform 150ms ease;
       transform-origin: center center;
       cursor: pointer;
+      text-decoration: none;
     }
 
     /* 首字母沉底（用底部对齐实现） */
@@ -130,6 +131,32 @@
       /* 立体与粗糙感的阴影，可按需调整（已在上方关闭阴影以突出描边） */
     }
 
+    /* 书签右上角小图标行 */
+    .bookmark-icons {
+      position: absolute;
+      top: -35px; /* 贴近book容器右上角，可按需微调 */
+      right: 30px;
+      display: flex;
+      align-items: center;
+      pointer-events: auto;
+      z-index: 6;
+    }
+
+    .bookmark-icons img {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      user-select: none;
+      transition: transform 0.3s ease, filter 0.3s ease;
+      cursor: pointer;
+    }
+
+    .bookmark-icons img:hover {
+      transform: scale(1.1);
+      filter: brightness(1.2);
+    }
+
+
   </style>
 </head>
 <body>
@@ -138,11 +165,20 @@
     <img class="bookmark second" src="assets/img/bookmark.png" alt="Bookmark">
     <img class="bookmark third" src="assets/img/bookmark.png" alt="Bookmark">
 
-    <div class="bookmark-label label-hound armor"><span class="initial">H</span><span class="rest">ound</span></div>
-    <div class="bookmark-label label-hare armor"><span class="initial">H</span><span class="rest">are</span></div>
-    <div class="bookmark-label label-owl armor"><span class="initial">O</span><span class="rest">wl</span></div>
+    <a class="bookmark-label label-hound armor" href="hound.html"><span class="initial">H</span><span class="rest">ound</span></a>
+    <a class="bookmark-label label-hare armor" href="hare.html"><span class="initial">H</span><span class="rest">are</span></a>
+    <a class="bookmark-label label-owl armor" href="owl.html"><span class="initial">O</span><span class="rest">wl</span></a>
+
+    <div class="bookmark-icons">
+      <img src="assets/img/cat-pipe.png" alt="Cat Pipe">
+      <img src="assets/img/donkey-harp.png" alt="Donkey Harp">
+      <img src="assets/img/music-dog.png" alt="Music Dog">
+      <img src="assets/img/music-bear.png" alt="Music Bear">
+    </div>
 
     <img class="music-player" src="assets/img/music-player.png" alt="Music Player">
+    
+    
   </div>
 
   <!-- BGM Audio Element -->
