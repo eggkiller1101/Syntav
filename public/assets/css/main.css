@@ -169,3 +169,71 @@ body {
 
 /* Back to home link */
 .back-home { margin-bottom: 12px; display: inline-block; }
+
+/* Back to Home image button */
+.back-home-img {
+  position: absolute;
+  bottom: 50px;
+  left: 50px;
+  width: 100px;
+  height: 200px;
+  user-select: none;
+  display: block;
+  transform: rotate(-30deg);
+  transform-origin: center center;
+  cursor: pointer;
+  transition: transform 150ms ease;
+}
+.back-home-img img {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  object-fit: contain;
+}
+/* Hover enlarge while keeping rotation */
+.back-home-img:hover { transform: rotate(-30deg) scale(1.08); }
+
+/* Show 'return' label on hover */
+.back-home-img::after {
+  content: 'return';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translate(-50%, 0) rotate(30deg);
+  background: rgba(255, 255, 255, 0.9);
+  color: #2b1a0e;
+  font-family: 'UnifrakturCook', cursive;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  border: 1px solid rgba(0,0,0,0.25);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 150ms ease;
+  z-index: 7;
+}
+/* Downward five-circle pointer (diagonal arrangement, largest near text, smallest near image) */
+.back-home-img::before {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translate(-50%, 0) rotate(30deg);
+  width: 12px;  /* largest bubble size */
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  /* place four smaller bubbles diagonally via box-shadows */
+  box-shadow:
+    8px 12px 0 -1px rgba(255, 255, 255, 0.9),  /* 2nd largest, slight right */
+    16px 22px 0 -2px rgba(255, 255, 255, 0.9),  /* 3rd, more right */
+    22px 30px 0 -3px rgba(255, 255, 255, 0.9),  /* 4th, even more right */
+    26px 36px 0 -4px rgba(255, 255, 255, 0.9);  /* smallest, most right, closest to image */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 150ms ease;
+  z-index: 7;
+}
+.back-home-img:hover::after,
+.back-home-img:hover::before { opacity: 1; }
