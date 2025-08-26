@@ -1,0 +1,18 @@
+{
+  "artworks": [
+    {
+      "id": "art-001",
+      "date": "2025-01-03",
+      "title": "月下兔",
+      "image": "assets/img/cat-pipe.png",
+      "caption": "试色与线稿练习"
+    },
+    {
+      "id": "art-002",
+      "date": "2025-01-06",
+      "title": "风中守望",
+      "image": "assets/img/donkey-harp.png",
+      "caption": "构图尝试，暖冷对比"
+    }
+  ]
+}
