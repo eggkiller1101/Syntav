@@ -18,6 +18,36 @@
     });
   }
 
+  // Icon click-to-play sounds (runs on all pages)
+  (function setupIconSounds(){
+    const filenameToSound = {
+      'music-dog.png': 'assets/music/bagpipe.mp3',
+      'donkey-harp.png': 'assets/music/harp.mp3',
+      'cat-pipe.png': 'assets/music/organ.mp3',
+      'music-bear.png': 'assets/music/oboe.mp3'
+    };
+    let currentAudio = null;
+
+    const imgs = Array.from(document.querySelectorAll('img'));
+    imgs.forEach(img => {
+      const srcAttr = img.getAttribute('src') || '';
+      const filename = srcAttr.split('/').pop();
+      const sound = filenameToSound[filename];
+      if (!sound) return;
+      img.addEventListener('click', () => {
+        if (currentAudio) {
+          try { currentAudio.pause(); } catch (_) {}
+        }
+        const audio = new Audio(sound);
+        currentAudio = audio;
+        const p = audio.play();
+        if (p && typeof p.catch === 'function') {
+          p.catch(err => console.warn('Sound play blocked or failed:', sound, err));
+        }
+      });
+    });
+  })();
+
   // Data-driven rendering
   const page = document.body.getAttribute('data-page');
   const contentRoot = document.querySelector('.page-content');

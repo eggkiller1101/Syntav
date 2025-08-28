@@ -108,7 +108,7 @@ body {
 /* Top-right icon row */
 .bookmark-icons {
   position: absolute;
-  top: -35px;
+  top: 8px;
   right: 30px;
   display: flex;
   align-items: center;
