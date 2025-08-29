@@ -7,6 +7,7 @@
   <link rel="icon" type="image/png" href="assets/img/favicon.png">
   <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="assets/css/hound.css">
 </head>
 <body data-page="hound">
   <div class="book">
@@ -28,7 +29,55 @@
     <img class="music-player" src="assets/img/music-player.png" alt="Music Player">
 
     <div class="page-content">
-      
+      <div class="hound-layout">
+        <aside id="page-left">
+          <!-- Search bar -->
+          <div class="hound-search">
+            <input type="search" placeholder="Search title, tags, summary…" />
+            <button type="button">Search</button>
+          </div>
+
+          <!-- Tags -->
+          <div class="hound-tags">
+            <!-- dynamically generated tag chips go here -->
+            <button class="tag-chip" aria-pressed="false">react</button>
+            <button class="tag-chip" aria-pressed="false">llm</button>
+          </div>
+
+          <!-- Article list -->
+          <div class="hound-list">
+            <article class="hound-entry">
+              <div class="hound-entry__header">
+                <h3 class="hound-entry__title"><a href="#">Sample Title</a></h3>
+                <time class="hound-entry__date">MM-DD-YY</time>
+              </div>
+              <div class="hound-entry__body">
+                <p>Summary preview goes here…</p>
+              </div>
+            </article>
+          </div>
+
+          <!-- Pager -->
+          <nav class="hound-pager">
+            <button class="btn" aria-disabled="true">Previous</button>
+            <span class="page-indicator">1</span>
+            <button class="btn">Next</button>
+          </nav>
+        </aside>
+
+        <main id="page-right">
+          <h1 class="reader-title">Sample Title</h1>
+          <div class="reader-meta">
+            <time>MM-DD-YY</time>
+            <div class="reader-tags">
+              <button class="tag-chip">sample</button>
+            </div>
+          </div>
+          <div class="reader-content">
+            <p>Click an article on the left to load its full content here.</p>
+          </div>
+        </main>
+      </div>
     </div>
     <a href="index.html" class="back-home-img">
       <img src="assets/img/hare-bow.png" alt="Back to Home">

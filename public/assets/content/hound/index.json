@@ -1,16 +1,28 @@
 {
   "entries": [
     {
-      "id": "2025-01-01",
-      "date": "2025-01-01",
-      "title": "新年的清晨",
-      "html": "<p>第一缕阳光照在羊皮纸上，决定给 <em>Synthpaw</em> 写下第一篇日记。</p>"
+      "id": "diary01",
+      "title": "wind and stone",
+      "date": "08-29-25",
+      "dateISO": "2025-08-29",
+      "tags": ["react", "llm"],
+      "summary": "An early note about React hooks and prompt design in LLM applications."
     },
     {
-      "id": "2025-01-05",
-      "date": "2025-01-05",
-      "title": "长风与旧路",
-      "html": "<p>今天尝试了新的画笔排布，还给主页加上了音乐播放器。</p>"
+      "id": "diary02",
+      "title": "crisp morning",
+      "date": "09-01-25",
+      "dateISO": "2025-09-01",
+      "tags": ["react"],
+      "summary": "Thoughts on composing components with minimal state and clearer data flow."
+    },
+    {
+      "id": "diary03",
+      "title": "latent paths",
+      "date": "09-05-25",
+      "dateISO": "2025-09-05",
+      "tags": ["llm", "prompt"],
+      "summary": "Brief reflections on few-shot routing strategies and common failure modes."
     }
   ]
 }
