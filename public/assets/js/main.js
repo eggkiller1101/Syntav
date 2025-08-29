@@ -54,24 +54,117 @@
   if (!page || !contentRoot) return;
 
   if (page === 'hound') {
+    const leftPane = document.getElementById('page-left');
+    const rightPane = document.getElementById('page-right');
+    if (!leftPane || !rightPane) return;
+
+    const listContainer = leftPane.querySelector('.hound-list');
+    const pager = leftPane.querySelector('.hound-pager');
+    const tagsContainer = leftPane.querySelector('.hound-tags');
+
+    const readerTitle = rightPane.querySelector('.reader-title');
+    const readerMetaTime = rightPane.querySelector('.reader-meta time');
+    const readerTags = rightPane.querySelector('.reader-tags');
+    const readerContent = rightPane.querySelector('.reader-content');
+
+    // Helper to load and render a post into the right pane
+    function loadPost(entry) {
+      if (!entry || !entry.id) return;
+      const url = `assets/content/hound/posts/${entry.id}.html`;
+      fetch(url)
+        .then(r => {
+          if (!r.ok) throw new Error(`Failed to fetch ${url}: ${r.status}`);
+          return r.text();
+        })
+        .then(html => {
+          // Use the post HTML as-is; don't duplicate header/meta in the right pane
+          if (readerTitle) readerTitle.textContent = '';
+          if (readerMetaTime) readerMetaTime.textContent = '';
+          if (readerTags) readerTags.innerHTML = '';
+          if (readerContent) readerContent.innerHTML = html;
+        })
+        .catch(err => console.error('Failed to load post:', err));
+    }
+
+    // Fetch index and render list
     fetch('assets/content/hound/index.json')
       .then(r => r.json())
       .then(data => {
-        const container = document.createElement('div');
-        container.className = 'hound-list';
-        (data.entries || []).forEach(entry => {
-          const item = document.createElement('article');
-          item.className = 'hound-entry';
-          item.innerHTML = `
-            <header class="hound-entry__header">
-              <h2 class="hound-entry__title">${entry.title}</h2>
-              <time class="hound-entry__date">${entry.date}</time>
-            </header>
-            <section class="hound-entry__body">${entry.html}</section>
-          `;
-          container.appendChild(item);
+        const entries = Array.isArray(data.entries) ? data.entries : [];
+
+        // Populate tags (unique list across entries)
+        if (tagsContainer) {
+          const allTags = new Set();
+          entries.forEach(e => (e.tags || []).forEach(t => allTags.add(t)));
+          tagsContainer.innerHTML = '';
+          Array.from(allTags).forEach(tag => {
+            const btn = document.createElement('button');
+            btn.className = 'tag-chip';
+            btn.setAttribute('aria-pressed', 'false');
+            btn.textContent = tag;
+            btn.addEventListener('click', () => {
+              // Simple tag toggle filter
+              const active = btn.getAttribute('aria-pressed') === 'true';
+              btn.setAttribute('aria-pressed', active ? 'false' : 'true');
+              renderList();
+            });
+            tagsContainer.appendChild(btn);
+          });
+        }
+
+        function getActiveTags() {
+          if (!tagsContainer) return [];
+          return Array.from(tagsContainer.querySelectorAll('.tag-chip[aria-pressed="true"]')).map(b => b.textContent || '');
+        }
+
+        function renderList() {
+          if (!listContainer) return;
+          const activeTags = getActiveTags();
+          listContainer.innerHTML = '';
+          const filtered = activeTags.length
+            ? entries.filter(e => (e.tags || []).some(t => activeTags.includes(t)))
+            : entries;
+          filtered.forEach(entry => {
+            const item = document.createElement('article');
+            item.className = 'hound-entry';
+            item.innerHTML = `
+              <div class="hound-entry__header">
+                <h3 class="hound-entry__title"><a href="#${entry.id}">${entry.title}</a></h3>
+                <time class="hound-entry__date">${entry.date}</time>
+              </div>
+              <div class="hound-entry__body">
+                <p>${entry.summary || ''}</p>
+              </div>
+            `;
+            // Click through to load post
+            item.addEventListener('click', () => {
+              location.hash = `#${entry.id}`;
+              loadPost(entry);
+            });
+            listContainer.appendChild(item);
+          });
+
+          // Simple pager indicator update (single page for now)
+          if (pager) {
+            const indicator = pager.querySelector('.page-indicator');
+            if (indicator) indicator.textContent = '1';
+          }
+        }
+
+        // Initial render
+        renderList();
+
+        // Load initial post from hash or first entry
+        const initialId = (location.hash || '').replace('#', '');
+        const initial = entries.find(e => e.id === initialId) || entries[0];
+        if (initial) loadPost(initial);
+
+        // Handle hash changes (back/forward navigation)
+        window.addEventListener('hashchange', () => {
+          const id = (location.hash || '').replace('#', '');
+          const entry = entries.find(e => e.id === id);
+          if (entry) loadPost(entry);
         });
-        contentRoot.appendChild(container);
       })
       .catch(err => console.error('Failed to load hound entries:', err));
   }
