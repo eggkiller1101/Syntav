@@ -23,6 +23,30 @@
       "dateISO": "2025-09-05",
       "tags": ["llm", "prompt"],
       "summary": "Brief reflections on few-shot routing strategies and common failure modes."
+    },
+    {
+      "id": "diary04",
+      "title": "autumn leaves",
+      "date": "09-10-25",
+      "dateISO": "2025-09-10",
+      "tags": ["nature", "reflection"],
+      "summary": "Walking through the park today, I noticed how the leaves are starting to change color."
+    },
+    {
+      "id": "diary05",
+      "title": "coffee thoughts",
+      "date": "09-12-25",
+      "dateISO": "2025-09-12",
+      "tags": ["coffee", "morning", "routine"],
+      "summary": "There's something magical about that first cup of coffee in the morning."
+    },
+    {
+      "id": "diary06",
+      "title": "night coding",
+      "date": "09-15-25",
+      "dateISO": "2025-09-15",
+      "tags": ["coding", "night", "focus"],
+      "summary": "Late night coding sessions have a different energy."
     }
   ]
 }
