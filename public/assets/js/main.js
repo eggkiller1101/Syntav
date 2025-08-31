@@ -65,6 +65,10 @@
     const listContainer = leftPane.querySelector(".hound-list");
     const pager = leftPane.querySelector(".hound-pager");
     const tagsContainer = leftPane.querySelector(".hound-tags");
+    const searchInput = leftPane.querySelector(
+      ".hound-search input[type='search']"
+    );
+    const searchButton = leftPane.querySelector(".hound-search button");
 
     const readerTitle = rightPane.querySelector(".reader-title");
     const readerMetaTime = rightPane.querySelector(".reader-meta time");
@@ -76,6 +80,7 @@
     let currentPage = 1;
     let filteredEntries = [];
     let entries = []; // Move entries to outer scope
+    let searchQuery = ""; // Track current search query
 
     // Helper function to get active tags
     function getActiveTags() {
@@ -83,6 +88,44 @@
       return Array.from(
         tagsContainer.querySelectorAll('.tag-chip[aria-pressed="true"]')
       ).map((b) => b.textContent || "");
+    }
+
+    // Search function with relevance weighting
+    function performSearch(query, entries) {
+      if (!query.trim()) return entries;
+
+      const searchTerm = query.toLowerCase().trim();
+
+      return entries
+        .map((entry) => {
+          let score = 0;
+
+          // Title matching (highest weight: 10 points)
+          if (entry.title && entry.title.toLowerCase().includes(searchTerm)) {
+            score += 10;
+          }
+
+          // Tags matching (medium weight: 5 points per tag)
+          if (entry.tags && Array.isArray(entry.tags)) {
+            entry.tags.forEach((tag) => {
+              if (tag.toLowerCase().includes(searchTerm)) {
+                score += 5;
+              }
+            });
+          }
+
+          // Summary matching (lowest weight: 1 point)
+          if (
+            entry.summary &&
+            entry.summary.toLowerCase().includes(searchTerm)
+          ) {
+            score += 1;
+          }
+
+          return { ...entry, searchScore: score };
+        })
+        .filter((entry) => entry.searchScore > 0)
+        .sort((a, b) => b.searchScore - a.searchScore); // Sort by relevance score
     }
 
     // Helper to load and render a post into the right pane
@@ -145,11 +188,14 @@
       if (!listContainer) return;
 
       const activeTags = getActiveTags();
+
+      // Apply search first, then tag filtering
+      let searchResults = performSearch(searchQuery, entries);
       filteredEntries = activeTags.length
-        ? entries.filter((e) =>
+        ? searchResults.filter((e) =>
             (e.tags || []).some((t) => activeTags.includes(t))
           )
-        : entries;
+        : searchResults;
 
       const totalPages = Math.ceil(filteredEntries.length / ENTRIES_PER_PAGE);
       currentPage = Math.min(currentPage, totalPages || 1);
@@ -157,27 +203,54 @@
       const pageEntries = getPageEntries(currentPage, filteredEntries);
 
       listContainer.innerHTML = "";
-      pageEntries.forEach((entry) => {
-        const item = document.createElement("article");
-        item.className = "hound-entry";
-        item.innerHTML = `
-          <div class="hound-entry__header">
-            <h3 class="hound-entry__title"><a href="#${entry.id}">${
-          entry.title
-        }</a></h3>
-            <time class="hound-entry__date">${entry.date}</time>
-          </div>
-          <div class="hound-entry__body">
-            <p>${entry.summary || ""}</p>
-          </div>
+
+      if (filteredEntries.length === 0) {
+        // Show no results message
+        const noResults = document.createElement("div");
+        noResults.className = "no-results";
+        noResults.innerHTML = `
+          <p>No entries found${searchQuery ? ` for "${searchQuery}"` : ""}.</p>
+          ${
+            searchQuery
+              ? '<button class="clear-search">Clear search</button>'
+              : ""
+          }
         `;
-        // Click through to load post
-        item.addEventListener("click", () => {
-          location.hash = `#${entry.id}`;
-          loadPost(entry);
+        listContainer.appendChild(noResults);
+
+        // Add clear search functionality
+        const clearBtn = noResults.querySelector(".clear-search");
+        if (clearBtn) {
+          clearBtn.addEventListener("click", () => {
+            searchInput.value = "";
+            searchQuery = "";
+            currentPage = 1;
+            renderList();
+          });
+        }
+      } else {
+        pageEntries.forEach((entry) => {
+          const item = document.createElement("article");
+          item.className = "hound-entry";
+          item.innerHTML = `
+            <div class="hound-entry__header">
+              <h3 class="hound-entry__title"><a href="#${entry.id}">${
+            entry.title
+          }</a></h3>
+              <time class="hound-entry__date">${entry.date}</time>
+            </div>
+            <div class="hound-entry__body">
+              <p>${entry.summary || ""}</p>
+            </div>
+          `;
+          // Click through to load post
+          item.addEventListener("click", () => {
+            location.hash = `#${entry.id}`;
+            loadPost(entry);
+          });
+          listContainer.appendChild(item);
         });
-        listContainer.appendChild(item);
-      });
+      }
 
       updatePager(currentPage, totalPages);
     }
@@ -213,6 +286,36 @@
           }
         });
       }
+    }
+
+    // Search event handlers
+    if (searchInput && searchButton) {
+      // Search button click
+      searchButton.addEventListener("click", () => {
+        searchQuery = searchInput.value.trim();
+        currentPage = 1; // Reset to first page when searching
+        renderList();
+      });
+
+      // Search input enter key
+      searchInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          searchQuery = searchInput.value.trim();
+          currentPage = 1;
+          renderList();
+        }
+      });
+
+      // Real-time search with debouncing (optional)
+      let searchTimeout;
+      searchInput.addEventListener("input", (e) => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+          searchQuery = e.target.value.trim();
+          currentPage = 1;
+          renderList();
+        }, 300); // 300ms delay for better performance
+      });
     }
 
     // Fetch index and render list
