@@ -74,6 +74,36 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   color: #000;
+  -webkit-text-fill-color: #000; /* ensure Safari/WebKit renders text fully black */
+  appearance: none; /* remove default search styling that may affect placeholder */
+  color-scheme: light; /* avoid OS dark mode dimming the placeholder */
+}
+
+.search-container input[type="search"]::placeholder {
+  color: #000;
+  opacity: 1; /* ensures the black shows fully */
+}
+
+/* Cross-browser placeholder color overrides */
+.search-container input[type="search"]::placeholder {
+  color: #000 !important;
+  opacity: 1 !important;
+}
+.search-container input[type="search"]::-webkit-input-placeholder {
+  color: #000 !important;
+  opacity: 1 !important;
+}
+.search-container input[type="search"]::-moz-placeholder {
+  color: #000 !important;
+  opacity: 1 !important;
+}
+.search-container input[type="search"]:-ms-input-placeholder {
+  color: #000 !important;
+  opacity: 1 !important;
+}
+.search-container input[type="search"]::-ms-input-placeholder {
+  color: #000 !important;
+  opacity: 1 !important;
 }
 
 .search-container input[type="search"]:focus {
