@@ -57,6 +57,10 @@
   font-size: 14px;
   outline: none;
 }
+.hound-search input[type="search"]:focus,
+.hound-search input[type="text"]:focus {
+  outline: none;
+}
 .hound-search button {
   padding: 10px 14px;
   border: 1px solid rgba(0, 0, 0, 0.25);
@@ -221,13 +225,4 @@
 #page-right::after {
   bottom: 0;
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0));
-}
-
-/* Focus outlines for accessibility */
-.hound-search input:focus,
-.hound-search button:focus,
-.hound-pager .btn:focus,
-.hound-entry a:focus {
-  outline: 2px solid rgba(0, 0, 0, 0.55);
-  outline-offset: 2px;
 }

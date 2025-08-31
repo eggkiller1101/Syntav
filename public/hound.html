@@ -1,78 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Hound - Synthpaw</title>
-  <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico">
-  <link rel="icon" type="image/png" href="assets/img/favicon.png">
-  <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/main.css">
-  <link rel="stylesheet" href="assets/css/hound.css">
-</head>
-<body data-page="hound">
-  <div class="book">
-    <img class="bookmark" src="assets/img/bookmark.png" alt="Bookmark">
-    <img class="bookmark second" src="assets/img/bookmark.png" alt="Bookmark">
-    <img class="bookmark third" src="assets/img/bookmark.png" alt="Bookmark">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hound - Synthpaw</title>
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
+    <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="assets/css/hound.css" />
+  </head>
+  <body data-page="hound">
+    <div class="book">
+      <img class="bookmark" src="assets/img/bookmark.png" alt="Bookmark" />
+      <img
+        class="bookmark second"
+        src="assets/img/bookmark.png"
+        alt="Bookmark"
+      />
+      <img
+        class="bookmark third"
+        src="assets/img/bookmark.png"
+        alt="Bookmark"
+      />
 
-    <a class="bookmark-label label-hound armor" href="hound.html"><span class="initial">H</span><span class="rest">ound</span></a>
-    <a class="bookmark-label label-hare armor" href="hare.html"><span class="initial">H</span><span class="rest">are</span></a>
-    <a class="bookmark-label label-owl armor" href="owl.html"><span class="initial">O</span><span class="rest">wl</span></a>
+      <a class="bookmark-label label-hound armor" href="hound.html"
+        ><span class="initial">H</span><span class="rest">ound</span></a
+      >
+      <a class="bookmark-label label-hare armor" href="hare.html"
+        ><span class="initial">H</span><span class="rest">are</span></a
+      >
+      <a class="bookmark-label label-owl armor" href="owl.html"
+        ><span class="initial">O</span><span class="rest">wl</span></a
+      >
 
-    <div class="bookmark-icons">
-      <img src="assets/img/cat-pipe.png" alt="Cat Pipe">
-      <img src="assets/img/donkey-harp.png" alt="Donkey Harp">
-      <img src="assets/img/music-dog.png" alt="Music Dog">
-      <img src="assets/img/music-bear.png" alt="Music Bear">
-    </div>
-
-    <img class="music-player" src="assets/img/music-player.png" alt="Music Player">
-
-    <div class="page-content">
-      <div class="hound-layout">
-        <aside id="page-left">
-          <!-- Search bar -->
-          <div class="hound-search">
-            <input type="search" placeholder="Search title, tags, summary…" />
-            <button type="button">Search</button>
-          </div>
-
-          <!-- Tags -->
-          <div class="hound-tags">
-            <!-- dynamically generated tag chips go here -->
-          </div>
-
-          <!-- Article list -->
-          <div class="hound-list">
-            <!-- dynamically generated entries go here -->
-          </div>
-
-          <!-- Pager -->
-          <nav class="hound-pager">
-            <button class="btn" aria-disabled="true">Previous</button>
-            <span class="page-indicator">1</span>
-            <button class="btn">Next</button>
-          </nav>
-        </aside>
-
-        <main id="page-right">
-          <h1 class="reader-title"></h1>
-          <div class="reader-meta">
-            <time></time>
-            <div class="reader-tags"></div>
-          </div>
-          <div class="reader-content"></div>
-        </main>
+      <div class="bookmark-icons">
+        <img src="assets/img/cat-pipe.png" alt="Cat Pipe" />
+        <img src="assets/img/donkey-harp.png" alt="Donkey Harp" />
+        <img src="assets/img/music-dog.png" alt="Music Dog" />
+        <img src="assets/img/music-bear.png" alt="Music Bear" />
       </div>
-    </div>
-    <a href="index.html" class="back-home-img">
-      <img src="assets/img/hare-bow.png" alt="Back to Home">
-    </a>
-  </div>
 
-  <audio id="bgm" loop>
-    <source src="assets/music/bgm.mp3" type="audio/mpeg">
-  </audio>
-  <script src="assets/js/main.js"></script>
-</body>
+      <img
+        class="music-player"
+        src="assets/img/music-player.png"
+        alt="Music Player"
+      />
+
+      <div class="page-content">
+        <div class="hound-layout">
+          <aside id="page-left">
+            <!-- Search bar -->
+            <div class="hound-search">
+              <div class="search-container">
+                <input
+                  type="search"
+                  placeholder="Search title, tags, summary…"
+                />
+              </div>
+              <button type="button">Search</button>
+            </div>
+
+            <!-- Tags -->
+            <div class="hound-tags">
+              <!-- dynamically generated tag chips go here -->
+            </div>
+
+            <!-- Article list -->
+            <div class="hound-list">
+              <!-- dynamically generated entries go here -->
+            </div>
+
+            <!-- Pager -->
+            <nav class="hound-pager">
+              <button class="btn" aria-disabled="true">Previous</button>
+              <span class="page-indicator">1</span>
+              <button class="btn">Next</button>
+            </nav>
+          </aside>
+
+          <main id="page-right">
+            <h1 class="reader-title"></h1>
+            <div class="reader-meta">
+              <time></time>
+              <div class="reader-tags"></div>
+            </div>
+            <div class="reader-content"></div>
+          </main>
+        </div>
+      </div>
+      <a href="index.html" class="back-home-img">
+        <img src="assets/img/hare-bow.png" alt="Back to Home" />
+      </a>
+    </div>
+
+    <audio id="bgm" loop>
+      <source src="assets/music/bgm.mp3" type="audio/mpeg" />
+    </audio>
+    <script src="assets/js/main.js"></script>
+  </body>
 </html>
