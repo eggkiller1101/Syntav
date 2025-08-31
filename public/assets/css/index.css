@@ -71,40 +71,6 @@
   background: rgba(255, 255, 255, 0.95);
 }
 
-/* Tags */
-.hound-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  align-content: flex-start;
-  max-height: 98px; /* keep tags compact; adjust as needed */
-  overflow: auto;
-}
-.tag-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  font-size: 13px;
-  line-height: 1;
-  cursor: pointer;
-  user-select: none;
-  transition: transform 120ms ease, background 120ms ease,
-    border-color 120ms ease;
-}
-.tag-chip:hover {
-  transform: scale(1.03);
-  background: rgba(255, 255, 255, 0.95);
-}
-.tag-chip[aria-pressed="true"],
-.tag-chip.is-active {
-  background: #f6efe6;
-  border-color: rgba(0, 0, 0, 0.35);
-}
-
 /* Post list */
 .hound-list {
   /* overflow: auto; list gets its own scroll */
@@ -260,7 +226,6 @@
 /* Focus outlines for accessibility */
 .hound-search input:focus,
 .hound-search button:focus,
-.tag-chip:focus,
 .hound-pager .btn:focus,
 .hound-entry a:focus {
   outline: 2px solid rgba(0, 0, 0, 0.55);

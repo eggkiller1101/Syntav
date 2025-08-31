@@ -235,12 +235,26 @@
         if (tagsContainer) {
           const allTags = new Set();
           entries.forEach((e) => (e.tags || []).forEach((t) => allTags.add(t)));
+          const tagsArray = Array.from(allTags);
+
           tagsContainer.innerHTML = "";
-          Array.from(allTags).forEach((tag) => {
+
+          // Show first 4 tags by default, rest are hidden
+          const INITIAL_TAGS_SHOWN = 4;
+          const hasMoreTags = tagsArray.length > INITIAL_TAGS_SHOWN;
+
+          tagsArray.forEach((tag, index) => {
             const btn = document.createElement("button");
             btn.className = "tag-chip";
             btn.setAttribute("aria-pressed", "false");
             btn.textContent = tag;
+
+            // Hide tags beyond the initial limit
+            if (index >= INITIAL_TAGS_SHOWN) {
+              btn.style.display = "none";
+              btn.classList.add("tag-hidden");
+            }
+
             btn.addEventListener("click", () => {
               // Simple tag toggle filter
               const active = btn.getAttribute("aria-pressed") === "true";
@@ -250,6 +264,30 @@
             });
             tagsContainer.appendChild(btn);
           });
+
+          // Add Show More/Less toggle if there are more tags
+          if (hasMoreTags) {
+            const toggleBtn = document.createElement("button");
+            toggleBtn.className = "tag-toggle";
+            toggleBtn.textContent = `Show More`;
+            toggleBtn.addEventListener("click", () => {
+              const hiddenTags = tagsContainer.querySelectorAll(".tag-hidden");
+              const isExpanded = hiddenTags[0].style.display !== "none";
+
+              if (isExpanded) {
+                // Collapse
+                hiddenTags.forEach((tag) => (tag.style.display = "none"));
+                toggleBtn.textContent = `Show More`;
+              } else {
+                // Expand
+                hiddenTags.forEach(
+                  (tag) => (tag.style.display = "inline-flex")
+                );
+                toggleBtn.textContent = "Show Less";
+              }
+            });
+            tagsContainer.appendChild(toggleBtn);
+          }
         }
 
         // Initial render

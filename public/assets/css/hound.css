@@ -99,6 +99,26 @@
   border-color: rgba(0, 0, 0, 0.35);
 }
 
+/* Tag toggle button */
+.tag-toggle {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(200, 200, 200, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 120ms ease, background 120ms ease;
+  font-style: italic;
+}
+.tag-toggle:hover {
+  transform: scale(1.03);
+  background: rgba(200, 200, 200, 0.9);
+}
+
 /* Post list */
 .hound-list {
   /* overflow: auto; list gets its own scroll */
