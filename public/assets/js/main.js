@@ -88,7 +88,9 @@
     // Helper to load and render a post into the right pane
     function loadPost(entry) {
       if (!entry || !entry.id) return;
+
       const url = `assets/content/hound/posts/${entry.id}.html`;
+
       fetch(url)
         .then((r) => {
           if (!r.ok) throw new Error(`Failed to fetch ${url}: ${r.status}`);
@@ -99,7 +101,11 @@
           if (readerTitle) readerTitle.textContent = "";
           if (readerMetaTime) readerMetaTime.textContent = "";
           if (readerTags) readerTags.innerHTML = "";
-          if (readerContent) readerContent.innerHTML = html;
+          if (readerContent) {
+            readerContent.innerHTML = html;
+          } else {
+            console.error("readerContent element not found!");
+          }
         })
         .catch((err) => console.error("Failed to load post:", err));
     }
@@ -138,8 +144,6 @@
     function renderList() {
       if (!listContainer) return;
 
-      console.log("renderList called, entries:", entries); // Debug log
-
       const activeTags = getActiveTags();
       filteredEntries = activeTags.length
         ? entries.filter((e) =>
@@ -147,14 +151,10 @@
           )
         : entries;
 
-      console.log("filteredEntries:", filteredEntries); // Debug log
-
       const totalPages = Math.ceil(filteredEntries.length / ENTRIES_PER_PAGE);
       currentPage = Math.min(currentPage, totalPages || 1);
 
       const pageEntries = getPageEntries(currentPage, filteredEntries);
-
-      console.log("pageEntries:", pageEntries); // Debug log
 
       listContainer.innerHTML = "";
       pageEntries.forEach((entry) => {
@@ -193,32 +193,22 @@
         (btn) => btn.textContent === "Next"
       );
 
-      console.log("Pager found:", pager); // Debug
-      console.log("Previous button:", prevBtn); // Debug
-      console.log("Next button:", nextBtn); // Debug
-
       if (prevBtn) {
-        console.log("Adding click listener to Previous button"); // Debug
         prevBtn.addEventListener("click", () => {
-          console.log("Previous clicked, currentPage:", currentPage); // Debug
           if (currentPage > 1) {
             currentPage--;
-            console.log("Going to page:", currentPage); // Debug
             renderList();
           }
         });
       }
 
       if (nextBtn) {
-        console.log("Adding click listener to Next button"); // Debug
         nextBtn.addEventListener("click", () => {
-          console.log("Next clicked, currentPage:", currentPage); // Debug
           const totalPages = Math.ceil(
             filteredEntries.length / ENTRIES_PER_PAGE
           );
           if (currentPage < totalPages) {
             currentPage++;
-            console.log("Going to page:", currentPage); // Debug
             renderList();
           }
         });
@@ -226,17 +216,20 @@
     }
 
     // Fetch index and render list
-    console.log("Starting fetch for hound entries..."); // Debug log
     fetch("assets/content/hound/index.json")
       .then((r) => {
-        console.log("Fetch response:", r.status, r.ok); // Debug log
         if (!r.ok) throw new Error(`Failed to fetch: ${r.status}`);
         return r.json();
       })
       .then((data) => {
-        console.log("Fetched data:", data); // Debug log
         entries = Array.isArray(data.entries) ? data.entries : [];
-        console.log("Processed entries:", entries); // Debug log
+
+        // Sort entries by date (newest first)
+        entries.sort((a, b) => {
+          const dateA = new Date(a.dateISO);
+          const dateB = new Date(b.dateISO);
+          return dateB - dateA; // Descending order (newest first)
+        });
 
         // Populate tags (unique list across entries)
         if (tagsContainer) {
