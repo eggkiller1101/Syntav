@@ -75,6 +75,33 @@
     const readerTags = rightPane.querySelector(".reader-tags");
     const readerContent = rightPane.querySelector(".reader-content");
 
+    // Date formatter dd-mm-yyyy (prefers dateISO)
+    function formatDateForDisplay(entry) {
+      const iso = entry && entry.dateISO;
+      if (iso) {
+        const d = new Date(iso);
+        if (!isNaN(d)) {
+          const dd = String(d.getDate()).padStart(2, "0");
+          const mm = String(d.getMonth() + 1).padStart(2, "0");
+          const yyyy = d.getFullYear();
+          return `${dd}-${mm}-${yyyy}`;
+        }
+      }
+      if (entry && entry.date) {
+        const parts = String(entry.date).split("-");
+        if (parts.length === 3) {
+          const [mm, dd, yy] = parts;
+          const yyyy = Number(yy) < 70 ? `20${yy}` : `19${yy}`;
+          return `${String(dd).padStart(2, "0")}-${String(mm).padStart(
+            2,
+            "0"
+          )}-${yyyy}`;
+        }
+        return entry.date;
+      }
+      return "";
+    }
+
     // Pagination settings
     const ENTRIES_PER_PAGE = 3;
     let currentPage = 1;
@@ -237,7 +264,9 @@
               <h3 class="hound-entry__title"><a href="#${entry.id}">${
             entry.title
           }</a></h3>
-              <time class="hound-entry__date">${entry.date}</time>
+              <time class="hound-entry__date">${formatDateForDisplay(
+                entry
+              )}</time>
             </div>
             <div class="hound-entry__body">
               <p>${entry.summary || ""}</p>

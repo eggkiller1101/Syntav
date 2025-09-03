@@ -312,6 +312,57 @@
 .reader-content p {
   margin: 0 0 12px 0;
 }
+.reader-content h1 {
+  font-family: "Cardo", serif;
+}
+
+.reader-title {
+  font-family: "Cardo", serif;
+}
+
+.reader-content {
+  font-family: "EB Garamond", Garamond, serif;
+}
+
+.reader-content p,
+.reader-content li,
+.reader-content blockquote,
+.reader-content figure,
+.reader-content figcaption {
+  font-family: inherit;
+}
+
+.hound-entry__date,
+.reader-meta time {
+  font-family: "EB Garamond", Garamond, serif;
+  color: #5a4632;
+  font-size: 8pt;
+}
+
+/* Reader-side tag appearance: ❧ Tag ❧ */
+.reader-tags .tag-chip {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0 6px 0 0;
+  font-family: "EB Garamond", Garamond, serif;
+  color: #5a4632;
+  font-size: 1rem;
+  line-height: 1.2;
+}
+.reader-tags .tag-chip::before {
+  content: "❧ \00a0";
+}
+.reader-tags .tag-chip::after {
+  content: "\00a0 ❧";
+}
+.reader-tags .tag-chip:hover {
+  color: #3e2f22;
+}
+.reader-tags .tag-chip:focus {
+  outline: none;
+  text-decoration: underline;
+}
 
 /* Subtle top/bottom fade to indicate scrollable content */
 #page-right::before,
