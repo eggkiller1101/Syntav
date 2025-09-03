@@ -102,6 +102,93 @@
       return "";
     }
 
+    // Date formatter: Date: Month D, YYYY
+    function formatDateLong(entry) {
+      const iso = entry && entry.dateISO;
+      if (iso) {
+        const d = new Date(iso);
+        if (!isNaN(d)) {
+          const month = d.toLocaleString("en-US", { month: "long" });
+          const day = d.getDate();
+          const year = d.getFullYear();
+          return `Date: ${month} ${day}, ${year}`;
+        }
+      }
+      // fallback using entry.date (mm-dd-yy)
+      if (entry && entry.date) {
+        const [mm, dd, yy] = String(entry.date).split("-");
+        if (mm && dd && yy) {
+          const yyyy = Number(yy) < 70 ? 2000 + Number(yy) : 1900 + Number(yy);
+          const d = new Date(Number(yyyy), Number(mm) - 1, Number(dd));
+          if (!isNaN(d)) {
+            const month = d.toLocaleString("en-US", { month: "long" });
+            return `Date: ${month} ${d.getDate()}, ${d.getFullYear()}`;
+          }
+        }
+      }
+      return "";
+    }
+
+    // Helper to load and render a post into the right pane
+    function loadPost(entry) {
+      if (!entry || !entry.id) return;
+      const url = `assets/content/hound/posts/${entry.id}.html`;
+      fetch(url)
+        .then((r) => {
+          if (!r.ok) throw new Error(`Failed to fetch ${url}: ${r.status}`);
+          return r.text();
+        })
+        .then((html) => {
+          // Parse fetched HTML to extract meta (date, tags)
+          const tmp = document.createElement("div");
+          tmp.innerHTML = html;
+
+          // Extract tags from the post HTML if present
+          const tagLis = Array.from(tmp.querySelectorAll(".meta .tags li"));
+          const postTags = tagLis
+            .map((li) => (li.textContent || "").trim())
+            .filter(Boolean);
+
+          // Remove the original meta block from article (we'll show a unified meta)
+          const meta = tmp.querySelector(".meta");
+          if (meta) meta.remove();
+
+          // Insert date under the title (after first h1 in the article)
+          const h1 = tmp.querySelector("h1");
+          if (h1) {
+            const dateEl = document.createElement("div");
+            dateEl.className = "reader-date";
+            dateEl.textContent = formatDateLong(entry);
+            h1.insertAdjacentElement("afterend", dateEl);
+          }
+
+          // Clear the reader meta bar (we no longer show date/tags there)
+          if (readerTitle) readerTitle.textContent = "";
+          if (readerMetaTime) readerMetaTime.textContent = "";
+          if (readerTags) readerTags.innerHTML = "";
+
+          // Render article content
+          if (readerContent) {
+            readerContent.innerHTML = tmp.innerHTML;
+            // Append tags as buttons at the end of the entry content
+            if (postTags.length) {
+              const tagsWrap = document.createElement("div");
+              tagsWrap.className = "reader-tags";
+              postTags.forEach((t) => {
+                const b = document.createElement("button");
+                b.className = "tag-chip";
+                b.textContent = t;
+                tagsWrap.appendChild(b);
+              });
+              readerContent.appendChild(tagsWrap);
+            }
+          } else {
+            console.error("readerContent element not found!");
+          }
+        })
+        .catch((err) => console.error("Failed to load post:", err));
+    }
+
     // Pagination settings
     const ENTRIES_PER_PAGE = 3;
     let currentPage = 1;
@@ -153,31 +240,6 @@
         })
         .filter((entry) => entry.searchScore > 0)
         .sort((a, b) => b.searchScore - a.searchScore); // Sort by relevance score
-    }
-
-    // Helper to load and render a post into the right pane
-    function loadPost(entry) {
-      if (!entry || !entry.id) return;
-
-      const url = `assets/content/hound/posts/${entry.id}.html`;
-
-      fetch(url)
-        .then((r) => {
-          if (!r.ok) throw new Error(`Failed to fetch ${url}: ${r.status}`);
-          return r.text();
-        })
-        .then((html) => {
-          // Use the post HTML as-is; don't duplicate header/meta in the right pane
-          if (readerTitle) readerTitle.textContent = "";
-          if (readerMetaTime) readerMetaTime.textContent = "";
-          if (readerTags) readerTags.innerHTML = "";
-          if (readerContent) {
-            readerContent.innerHTML = html;
-          } else {
-            console.error("readerContent element not found!");
-          }
-        })
-        .catch((err) => console.error("Failed to load post:", err));
     }
 
     // Pagination functions

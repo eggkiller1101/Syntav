@@ -424,3 +424,10 @@
   transform: scale(1.03);
   background: rgba(255, 255, 255, 0.95);
 }
+
+.reader-date {
+  margin: 4px 0 12px 0;
+  font-family: "EB Garamond", Garamond, serif;
+  color: #5a4632;
+  font-size: 10.5pt;
+}
